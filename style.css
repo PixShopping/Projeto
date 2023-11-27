@@ -104,6 +104,7 @@
     flex-direction: column;
     padding: 30px 40px;
     color: var(--preto);
+    background: var(--text);
 }
 
 .container .formulario h1 {
@@ -111,7 +112,7 @@
     font-size: 26px;
     font-weight: 600;
     letter-spacing: -0.2px;
-    margin: 10px 0px;
+    margin: 10px 0px 12px 0px;
 }
 
 .container .formulario p {
@@ -194,8 +195,6 @@
 }
 
 
-
-
 .container .formulario .column {
     width: 100%;
     height: auto;
@@ -215,11 +214,22 @@
     }
 
     .container .imagem {
-        display: none;
+        width: 100%;
+        top: 0px;
+        left: 0px;
+    }
+    
+    .container .imagem .texto {
+        margin: 50px;
+        padding: 0px;
     }
 
     .container .formulario {
         width: 100%;
-        max-width: 700px;
+        z-index: 30;
+        position: relative;
+        top: 355px;
+        padding: 5%;
+        min-height: 100vh;
     }
 }
