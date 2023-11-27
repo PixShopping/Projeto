@@ -50,7 +50,7 @@
 
 
                 <button>Cadastrar-se</button>
-                <a>Já possui cadastro? <strong>Logar</strong></a>
+                <a>Já possui cadastro? <strong onclick="mostrarLogin()">Logar</strong></a>
 
             </div>
 
@@ -63,13 +63,13 @@
             <div>
 
                 <label for="email">E-mail <strong>*</strong></label>
-                <input id="emailLogar" type="text">
+                <input id="emailLogar" placeholder="ex: renan@gmail.com" type="text">
 
                 <label for="senha">Senha <strong>*</strong></label>
-                <input id="senhaLogar" type="text">
+                <input id="senhaLogar" placeholder="ex: renan123" type="text">
 
                 <button>Continuar</button>
-                <a>Não possui cadastro? <strong>Cadastrar</strong></a>
+                <a>Não possui cadastro? <strong onclick="mostrarCadastro()">Cadastrar</strong></a>
 
             </div>
 
@@ -125,6 +125,21 @@
                 });
         }
 
+        /* MOSTRAR CADASTRO */
+
+        function mostrarCadastro() {
+            const cadastro = document.querySelector('.cadastrar');
+            const logar = document.querySelector('.logar');
+            cadastro.style.display = "flex";
+            logar.style.display = "none";
+        }
+
+        function mostrarLogin() {
+            const cadastro = document.querySelector('.cadastrar');
+            const logar = document.querySelector('.logar');
+            cadastro.style.display = "none";
+            logar.style.display = "flex";
+        }
 
     </script>
 
