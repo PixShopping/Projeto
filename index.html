@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Projeto</title>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <section class="imagem">
+            
+            <div class="texto">
+                
+                <h1>Encontre trabalhos em sua cidade gratuitamente e de forma ágil</h1>
+                <p><ion-icon name="checkmark"></ion-icon>Mais de 53 milhões de profissionais cadastrados</p>
+                <p><ion-icon name="checkmark"></ion-icon>Mais de 1 milhão de visitas diárias</p>
+                <p><ion-icon name="checkmark"></ion-icon>Mais de 13 milhões de opiniões de candidatos</p>
+                <p><ion-icon name="checkmark"></ion-icon>Mais de 25 mil candidatos novos diários</p>
+            
+            </div>
+
+        </section>
+
+        <section class="formulario cadastrar">
+
+            <h1>O seu próximo trabalho está aqui!</h1>
+            <p>Crie sua conta para acessar e candidate-se à varios trabalhos.</p>
+
+            <div class="column">
+
+                <label>Nome e Sobrenome <strong for="nome">*</strong></label>
+                <input id="nome" placeholder="ex: Renan" type="text">
+
+                <label>E-mail <strong for="email">*</strong></label>
+                <input id="email" placeholder="ex: renan@gmail.com" type="text">
+
+                <label>Senha <strong for="senha">*</strong></label>
+                <input id="senha" placeholder="ex: renan123" type="text">
+
+                <label>CEP <strong for="cep">*</strong></label>
+                <input oninput="validarCEP()" id="cep" placeholder="ex: 00000-000" type="tel">
+
+                <label>Cargo Desejado <strong for="cargo">*</strong></label>
+                <input id="cargo" placeholder="ex: Engenheiro" type="text">
+
+
+
+                <button>Cadastrar-se</button>
+                <a>Já possui cadastro? <strong>Logar</strong></a>
+
+            </div>
+
+        </section>
+
+        <section class="formulario logar">
+
+            <img src="">
+            
+            <div>
+
+                <label for="email">E-mail <strong>*</strong></label>
+                <input id="emailLogar" type="text">
+
+                <label for="senha">Senha <strong>*</strong></label>
+                <input id="senhaLogar" type="text">
+
+                <button>Continuar</button>
+                <a>Não possui cadastro? <strong>Cadastrar</strong></a>
+
+            </div>
+
+        </section>
+
+    </main>
+    
+</body>
+
+    <!-- JavaScript -->
+    <script>
+
+        async function validarCEP() {
+            const inputCep = document.getElementById('cep');
+            const cep = document.getElementById('cep').value.replace(/\D/g, '');
+            
+            if (!/^\d+$/.test(cep)) {
+                inputCep.value = inputCep.value.slice(0, inputCep.value.length - 1);
+                return;
+            }
+
+            if (cep.length === 8) {
+                consultarCEP(cep);
+                inputCep.value = cep.replace(/^(\d{5})(\d{3})$/, "$1-$2");
+            } else if (cep.length >= 9) {
+                inputCep.value = inputCep.value.slice(0, 9);
+            }
+
+        }
+
+        async function consultarCEP(cep) {
+            const alertaCEP = document.querySelector('strong[for="cep"]');
+            // URL da API do ViaCEP
+            const apiUrl = `https://viacep.com.br/ws/${cep}/json/`;
+
+            // Fazendo requisição GET usando fetch
+            await fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    // Verifica se a resposta da API contém informações válidas
+                    if (!data.erro) {
+                        alertaCEP.innerHTML = 'CEP válido';
+                        alertaCEP.style.color = "var(--verde)";
+                        return true;
+                    } else {
+                        alertaCEP.innerHTML = "CEP inválido";
+                        alertaCEP.style.color = "var(--vermelho)";
+                        return false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro na consulta de CEP:', error);
+                });
+        }
+
+
+    </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</html>
