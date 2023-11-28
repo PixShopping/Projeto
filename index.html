@@ -1,147 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./style.css">
-    <title>Projeto</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./style.css">
+        <title> Projeto </title>
+    </head>
 
-<body>
+    <body>
+        
+        <header class="menu">
 
-    <main class="container">
+            <img src="./src/img/logo.png">
 
-        <section class="imagem">
-            
-            <div class="texto">
+            <ul class="links">
                 
-                <h1>Encontre trabalhos em sua cidade gratuitamente e de forma ágil</h1>
-                <p><ion-icon name="checkmark"></ion-icon>Mais de 53 milhões de profissionais cadastrados</p>
-                <p><ion-icon name="checkmark"></ion-icon>Mais de 1 milhão de visitas diárias</p>
-                <p><ion-icon name="checkmark"></ion-icon>Mais de 13 milhões de opiniões de candidatos</p>
-                <p><ion-icon name="checkmark"></ion-icon>Mais de 25 mil candidatos novos diários</p>
-            
-            </div>
+                <li class="selecionado">
+                    <ion-icon name="home-outline"></ion-icon>
+                    <p>Home</p>
+                </li>
 
-        </section>
+                <li>
+                    <ion-icon name="log-out-outline"></ion-icon>
+                    <p>Cadastrar</p>
+                </li>
 
-        <section class="formulario cadastrar">
+                <li>
+                    <ion-icon name="log-in-outline"></ion-icon>
+                    <p>Logar</p>
+                </li>
 
-            <h1>O seu próximo trabalho está aqui!</h1>
-            <p>Crie sua conta para acessar e candidate-se à varios trabalhos.</p>
+                <li>
+                    <ion-icon name="build-outline"></ion-icon>
+                    <p>Trabalhos</p>
+                </li>
+                
+                <li>
+                    <ion-icon name="settings-outline"></ion-icon>
+                    <p>Configurações</p>
+                </li>
 
-            <div class="column">
+            </ul>
 
-                <label>Nome e Sobrenome <strong for="nome">*</strong></label>
-                <input id="nome" placeholder="ex: Renan" type="text">
+            <button>Entrar em Contato</button>
 
-                <label>E-mail <strong for="email">*</strong></label>
-                <input id="email" placeholder="ex: renan@gmail.com" type="text">
+        </header>
 
-                <label>Senha <strong for="senha">*</strong></label>
-                <input id="senha" placeholder="ex: renan123" type="text">
-
-                <label>CEP <strong for="cep">*</strong></label>
-                <input oninput="validarCEP()" id="cep" placeholder="ex: 00000-000" type="tel">
-
-                <label>Cargo Desejado <strong for="cargo">*</strong></label>
-                <input id="cargo" placeholder="ex: Engenheiro" type="text">
+    </body>
 
 
+    <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-storage-compat.js"></script>
 
-                <button>Cadastrar-se</button>
-                <a>Já possui cadastro? <strong onclick="mostrarLogin()">Logar</strong></a>
-
-            </div>
-
-        </section>
-
-        <section class="formulario logar">
-
-            <img src="">
-            
-            <div>
-
-                <label for="email">E-mail <strong>*</strong></label>
-                <input id="emailLogar" placeholder="ex: renan@gmail.com" type="text">
-
-                <label for="senha">Senha <strong>*</strong></label>
-                <input id="senhaLogar" placeholder="ex: renan123" type="text">
-
-                <button>Continuar</button>
-                <a>Não possui cadastro? <strong onclick="mostrarCadastro()">Cadastrar</strong></a>
-
-            </div>
-
-        </section>
-
-    </main>
-    
-</body>
-
-    <!-- JavaScript -->
     <script>
 
-        async function validarCEP() {
-            const inputCep = document.getElementById('cep');
-            const cep = document.getElementById('cep').value.replace(/\D/g, '');
-            
-            if (!/^\d+$/.test(cep)) {
-                inputCep.value = inputCep.value.slice(0, inputCep.value.length - 1);
-                return;
-            }
+        const firebaseConfig = {
+            apiKey: "AIzaSyCzFWFCkZkeBbwFEB2APGmZxedyAu5iqI4",
+            authDomain: "projeto-12c1c.firebaseapp.com",
+            projectId: "projeto-12c1c",
+            storageBucket: "projeto-12c1c.appspot.com",
+            messagingSenderId: "917495531172",
+            appId: "1:917495531172:web:2730961d29b567cf874831"
+        };
 
-            if (cep.length === 8) {
-                consultarCEP(cep);
-                inputCep.value = cep.replace(/^(\d{5})(\d{3})$/, "$1-$2");
-            } else if (cep.length >= 9) {
-                inputCep.value = inputCep.value.slice(0, 9);
-            }
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
 
-        }
 
-        async function consultarCEP(cep) {
-            const alertaCEP = document.querySelector('strong[for="cep"]');
-            // URL da API do ViaCEP
-            const apiUrl = `https://viacep.com.br/ws/${cep}/json/`;
-
-            // Fazendo requisição GET usando fetch
-            await fetch(apiUrl)
-                .then(response => response.json())
-                .then(data => {
-                    // Verifica se a resposta da API contém informações válidas
-                    if (!data.erro) {
-                        alertaCEP.innerHTML = 'CEP válido';
-                        alertaCEP.style.color = "var(--verde)";
-                        return true;
-                    } else {
-                        alertaCEP.innerHTML = "CEP inválido";
-                        alertaCEP.style.color = "var(--vermelho)";
-                        return false;
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro na consulta de CEP:', error);
-                });
-        }
-
-        /* MOSTRAR CADASTRO */
-
-        function mostrarCadastro() {
-            const cadastro = document.querySelector('.cadastrar');
-            const logar = document.querySelector('.logar');
-            cadastro.style.display = "flex";
-            logar.style.display = "none";
-        }
-
-        function mostrarLogin() {
-            const cadastro = document.querySelector('.cadastrar');
-            const logar = document.querySelector('.logar');
-            cadastro.style.display = "none";
-            logar.style.display = "flex";
-        }
 
     </script>
+
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
