@@ -12,13 +12,6 @@
         <!-- TELA DO CELULAR -->
         <main class="tela">
 
-            <!-- NAVBAR -->
-            <header class="navbar">
-                
-                <h1>Trabalhos</h1>
-
-            </header>
-
             <!-- MENU -->
             <section class="menu">
 
@@ -188,7 +181,8 @@
         const resultadoTrabalho = document.querySelector('.resultadoTrabalho');
         const trabalhos = document.querySelector('.trabalhos ul');
         const formularios = document.querySelector('.formularios');
-        
+        const content = document.querySelector('.content');
+
         // LENDO OS TRABALHOS EXISTENTES
         db.collection('trabalhos')
         .onSnapshot((data) => {
@@ -205,6 +199,7 @@
 
         var formulario = ``;
         if (termTrabalho) {
+            content.style.display = "flex";
             db.collection('trabalhos')
             .onSnapshot((data) => {
                 data.docs.map((val) => {
