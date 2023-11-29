@@ -4,50 +4,119 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./style.css">
-        <title> Projeto </title>
+        <title> Projeto | Início </title>
     </head>
 
     <body>
         
-        <header class="menu">
+        <!-- TELA DO CELULAR -->
+        <main class="tela">
 
-            <img src="./src/img/logo.png">
-
-            <ul class="links">
+            <!-- NAVBAR -->
+            <header class="navbar">
                 
-                <li class="selecionado">
-                    <ion-icon name="home-outline"></ion-icon>
-                    <p>Home</p>
-                </li>
+                <h1>Início</h1>
 
-                <li>
-                    <ion-icon name="log-out-outline"></ion-icon>
-                    <p>Cadastrar</p>
-                </li>
+            </header>
 
-                <li>
-                    <ion-icon name="log-in-outline"></ion-icon>
-                    <p>Logar</p>
-                </li>
+            <!-- MENU -->
+            <section class="menu">
 
-                <li>
+                <div onclick="irPagina('index.html')" class="link atual">
+                    <ion-icon name="home"></ion-icon>
+                    <p>Início</p>
+                </div>
+                
+                <div onclick="irPagina('trabalhos')" class="link">
                     <ion-icon name="build-outline"></ion-icon>
                     <p>Trabalhos</p>
-                </li>
+                </div>
                 
-                <li>
-                    <ion-icon name="settings-outline"></ion-icon>
-                    <p>Configurações</p>
-                </li>
+                <div onclick="irPagina('favoritos')" class="link">
+                    <ion-icon name="bookmark-outline"></ion-icon>
+                    <p>Favoritos</p>
+                </div>
+                
+                <div onclick="irPagina('credito')" class="link">
+                    <ion-icon name="wallet-outline"></ion-icon>
+                    <p>Crédito</p>
+                </div>
 
-            </ul>
+                <div onclick="irPagina('perfil')" class="link">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <p>Perfil</p>
+                </div>
+                
+            </section>
 
-            <button>Entrar em Contato</button>
 
-        </header>
+            <section class="container">
+
+                <div class="trabalho">
+                    <h1>Transforme Ideias em Realidade: Encontre Especialistas Qualificados para seus Projetos</h1>
+                    <p>Conectamos suas necessidades às habilidades certas. Descreva o que você precisa, receba até 5 orçamentos personalizados e escolha a excelência para seus projetos.</p>
+                    <div class="flex">
+                        <input onkeydown="pressionarEnter(event)" id="inputBusca" placeholder="Digite aqui sua pesquisa" type="text">
+                        <ion-icon onclick="buscarTrabalho()" name="search"></ion-icon>
+                    </div>
+                    
+                </div>
+
+                <div class="categorias">
+
+                    <h1>Todas as categorias de serviços</h1>
+
+                    <ul>
+
+                        <li>
+                            <ion-icon name="settings-outline"></ion-icon>
+                            <p>Assistência <br> Técnica</p>
+                        </li>
+
+                        <li>
+                            <ion-icon name="trophy-outline"></ion-icon>
+                            <p>Aulas</p>
+                        </li>
+
+                        <li>
+                            <ion-icon name="desktop-outline"></ion-icon>
+                            <p>Designer e <br> Tecnologia</p>
+                        </li>
+
+                        <li>
+                            <ion-icon name="beer-outline"></ion-icon>
+                            <p>Eventos</p>
+                        </li>
+                        
+                        <li>
+                            <ion-icon name="home-outline"></ion-icon>
+                            <p>Serviços <br> Domésticos</p>
+                        </li>
+
+                        <li>
+                            <ion-icon name="construct-outline"></ion-icon>
+                            <p>Reformas e <br> Reparos</p>
+                        </li>
+
+                    </ul>
+
+                </div>
+                
+            </section>
+            
+
+
+        </main>
 
     </body>
 
+    <script>
+
+        function irPagina(pagina) {
+            window.location.href = `./${pagina}`;
+        }
+
+    </script>
 
     <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore-compat.js"></script>
@@ -70,6 +139,16 @@
         const storage = firebase.storage();
 
 
+        function buscarTrabalho() {
+            const pesquisa = document.getElementById('inputBusca').value.toLowerCase().replace(/\s/g, '');
+            window.location.href = "./trabalhos/?search=" + encodeURIComponent(pesquisa);
+        }
+
+        function pressionarEnter(event) {
+            if (event.key === "Enter") {
+                buscarTrabalho();
+            }
+        }
 
     </script>
 

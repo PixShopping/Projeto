@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./style.css">
+        <title> Projeto | Trabalhos </title>
+    </head>
+
+    <body>
+        
+        <!-- TELA DO CELULAR -->
+        <main class="tela">
+
+            <!-- NAVBAR -->
+            <header class="navbar">
+                
+                <h1>Trabalhos</h1>
+
+            </header>
+
+            <!-- MENU -->
+            <section class="menu">
+
+                <div onclick="irPagina('index.html')" class="link">
+                    <ion-icon name="home-outline"></ion-icon>
+                    <p>Início</p>
+                </div>
+                
+                <div onclick="irPagina('trabalhos')" class="link atual">
+                    <ion-icon name="build"></ion-icon>
+                    <p>Trabalhos</p>
+                </div>
+                
+                <div onclick="irPagina('favoritos')" class="link">
+                    <ion-icon name="bookmark-outline"></ion-icon>
+                    <p>Favoritos</p>
+                </div>
+                
+                <div onclick="irPagina('credito')" class="link">
+                    <ion-icon name="wallet-outline"></ion-icon>
+                    <p>Crédito</p>
+                </div>
+
+                <div onclick="irPagina('perfil')" class="link">
+                    <ion-icon name="person-outline"></ion-icon>
+                    <p>Perfil</p>
+                </div>
+                
+            </section>
+
+
+            <section class="container">
+
+                <article class="resultadoTrabalho"></article>
+                
+                <article class="trabalhos">
+                    <ul></ul>
+                </article>
+
+                <section class="formularios">
+
+                </section>
+
+            </section>
+            
+
+
+        </main>
+
+    </body>
+
+
+    <script>
+
+        function irPagina(pagina) {
+            window.location.href = `../${pagina}`;
+        }
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "))
+        }
+
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.3.0/firebase-storage-compat.js"></script>
+
+    <script>
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCzFWFCkZkeBbwFEB2APGmZxedyAu5iqI4",
+            authDomain: "projeto-12c1c.firebaseapp.com",
+            projectId: "projeto-12c1c",
+            storageBucket: "projeto-12c1c.appspot.com",
+            messagingSenderId: "917495531172",
+            appId: "1:917495531172:web:2730961d29b567cf874831"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        const termTrabalho = getParameterByName('search');
+        const resultadoTrabalho = document.querySelector('.resultadoTrabalho');
+        const trabalhos = document.querySelector('.trabalhos ul');
+        const formularios = document.querySelector('.formularios');
+        
+        // LENDO OS TRABALHOS EXISTENTES
+        db.collection('trabalhos')
+        .onSnapshot((data) => {
+            data.docs.map((val) => {
+                const trabalho = val.id;
+                trabalhos.innerHTML += `
+                    <li>
+                        <h1>${trabalho}</h1>
+                        <ion-icon name="chevron-forward-outline"></ion-icon>
+                    </li>
+                `;
+            });
+        });
+
+        var formulario = ``;
+        if (termTrabalho) {
+            db.collection('trabalhos')
+            .onSnapshot((data) => {
+                data.docs.map((val) => {
+                    const trabalho = val.id;
+                    if (trabalho.includes(termTrabalho)) {
+                        db.collection('trabalhos')
+                        .doc(trabalho)
+                        .collection('perguntas')
+                        .orderBy('id', 'asc')
+                        .onSnapshot((data) => {
+                            data.docs.map((val) => {
+                                const pergunta = val.data().pergunta;
+                                formularios.innerHTML += `
+                                    <div data-pergunta="${pergunta}" class="perguntas">
+                                        <h1>${pergunta}</h1>
+                                        <section></section>
+                                    </div>
+                                `;
+                            });
+                        });
+
+                        db.collection('trabalhos')
+                        .doc(trabalho)
+                        .collection('perguntas')
+                        .orderBy('id', 'asc')
+                        .onSnapshot((data) => {
+                            data.docs.map((val) => {
+                                const doc = val.id;
+                                const pergunta = val.data().pergunta;
+                                const div = document.querySelector(`div[data-pergunta="${pergunta}"] section`);
+                                const form = val.data().form;
+                                alert(form)
+                                div.innerHTML = `
+                                    ${form}
+                                `;
+                            });
+                        });
+
+
+                        // MOSTRAR O TRABALHO
+                        resultadoTrabalho.style.display = "flex";
+                        trabalhos.style.display = "none";
+                        resultadoTrabalho.innerHTML = `
+                            <div class="informacoes">
+
+                                <h1>Precisando de ${trabalho}?</h1>
+
+                                <ul>
+                                    <li>
+                                        <ion-icon class="seguro" name="lock-closed"></ion-icon>
+                                        <p>Até 5 orçamentos personalizados e seguros</p>
+                                    </li>
+                                    
+                                    <li>
+                                        <ion-icon class="estrela" name="star"></ion-icon>
+                                        <p>Profissionais qualificados</p>
+                                    </li>
+
+                                    <li>
+                                        <ion-icon class="youtube" name="logo-youtube"></ion-icon>
+                                        <p>Como funciona o Projeto?</p>
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                            <article class="content">
+
+                                <section class="formulario">
+
+                                    <div class="barra-de-progresso"></div>
+
+                                    <div class="flex">
+                                        <ion-icon class="estrela" name="star"></ion-icon>
+                                        <p>Confira as avaliações dos profissionais</p>
+                                    </div>
+
+                                    <h1 id="pergunta"></h1>
+                                    <ul id="resposta"></ul>
+
+                                    <button>Próximo</button>
+
+                                </section>
+
+                            </article>
+                        `;
+                    }
+                });
+            });
+        }
+
+
+
+    </script>
+
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+</html>

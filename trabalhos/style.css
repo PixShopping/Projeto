@@ -8,6 +8,19 @@
     --text: #f2f6fe;
 }
 
+/* ICONS */
+.estrela {
+    color: #daa520;
+}
+
+.youtube {
+    color: #ee0000;
+}
+
+.seguro {
+    color: var(--azulClaro);
+}
+
 * {
     padding: 0px;
     margin: 0px;
@@ -29,7 +42,7 @@ body {
     width: 100vw;
     max-width: 685px;
     height: auto;
-    min-height: 100vh;
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -117,124 +130,95 @@ body {
     padding: 0px 0px 70px 0px;
 }
 
-.container .trabalho {
-    width: 95%;
+
+/* TRABALHOS EM GERAL */
+.trabalhos {
+    width: 100%;
+    height: auto;
+    margin: 20px 0px;
+}
+
+.trabalhos ul {
+    width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 25px 0px;
-    padding: 0px 10px;
 }
 
-.container .trabalho h1 {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    line-height: 30px;
-    margin: 0px 0px 8px 0px;
-}
-
-.container .trabalho p {
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: 0px;
-    line-height: 24px;
-    margin: 0px 0px 8px 0px;
-}
-
-.container .trabalho .flex {
-    width: 100%;
-    height: auto;
+.trabalhos ul li {
+    width: 90%;
+    height: 45px;
     display: flex;
+    flex-direction: row;
     align-items: center;
-    margin: 10px 0px 0px 0px;
-    position: relative;
-}
-
-.container .trabalho input {
-    width: 100%;
-    height: 52.5px;
-    border: 2px solid #ccc;
-    padding: 17px;
-    outline: none;
-    font-size: 15.5px;
-    font-weight: 600;
+    justify-content: space-between;
+    padding: 25px 10px 25px 20px;
     border-radius: 10px;
-    color: var(--preto);
-}
-
-.container .trabalho ion-icon {
-    background: var(--preto);
-    color: var(--text);
-    width: 23px;
-    height: 23px;
-    padding: 5.5px;
-    border-radius: 10px;
-    position: absolute;
-    right: 10px;
     cursor: pointer;
-    border: 2px solid var(--preto);
-} .container .trabalho ion-icon:hover {
-    background: transparent;
-    color: var(--preto);
+    border: 1.5px solid var(--preto);
+    margin: 10px 0px;
+} .trabalhos ul li:hover {
+    box-shadow: 0px 5px 15px var(--preto);
     transition: all .2s linear;
 }
 
-/* CATEGORIAS */
+.trabalhos ul li h1 {
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
 
-.container .categorias {
+.trabalhos ul li ion-icon {
+    font-size: 26px;
+}
+
+/* TRABALHO ESPECÍFICO */
+
+.resultadoTrabalho {
+    width: 100%;
+    height: auto;
+    margin: 25px 0px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+.resultadoTrabalho .informacoes {
+    width: 85%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.resultadoTrabalho .informacoes h1 {
+    font-size: 25px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.resultadoTrabalho .informacoes ul {
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
     margin: 30px 0px;
 }
 
-.container .categorias h1 {
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 0.3px;
-}
-
-.container .categorias ul {
-    width: 500px;
-    max-width: 90%;
+.resultadoTrabalho .informacoes ul li {
+    width: 100%;
     height: auto;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin: 20px 0px;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0px 0px 10px #ccc;
-    padding: 15px;
+    margin: 6px 0px;
 }
 
-.container .categorias ul li {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin: 10px 5px;
-    padding: 8px 15px;
-    user-select: none;
-    border-radius: 10px;
-    cursor: pointer;
-} .container .categorias ul li:hover {
-    background: var(--azulClaro);
-    transition: all .2s linear;
+.resultadoTrabalho .informacoes ul li ion-icon {
+    font-size: 20px;
+    margin: 0px 0px 0px -4px;
 }
 
-.container .categorias ul li ion-icon {
-    font-size: 32px;
-    margin: 0px 0px 6px 0px;
-}
-
-.container .categorias ul li p {
-    font-size: 15.5px;
+.resultadoTrabalho .informacoes ul li p {
+    font-size: 16px;
+    margin: 0px 0px 0px 10px;
 }
