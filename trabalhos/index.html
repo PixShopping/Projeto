@@ -58,9 +58,30 @@
                     <ul></ul>
                 </article>
 
-                <section class="formularios">
+                <article class="content">
 
-                </section>
+                    <section class="formularios">
+                    
+                        <div class="barra-de-progresso"></div>
+    
+                        <div class="flex">
+                            <ion-icon class="estrela" name="star"></ion-icon>
+                            <p>Confira as avaliações dos profissionais</p>
+                        </div>
+
+                        <div class="botoes">
+
+                            <button class="btn-voltar" onclick="voltar()">Voltar</button>
+                            <button onclick="proximo()">Próximo</button>
+
+                        </div>
+                        
+                    </section>
+
+
+
+                </article>
+                
 
             </section>
             
@@ -72,6 +93,60 @@
 
 
     <script>
+
+        var indiceDaDivOn = -1;
+        function proximo() {
+            var todasAsPerguntas = document.querySelectorAll('.content .formularios .perguntas');
+            const btnVoltar = document.querySelector('.content .formularios .btn-voltar');
+            const progresso = document.querySelector('.content .barra-de-progresso');
+            var total = todasAsPerguntas.length - 1;
+            // Inicializa uma variável para armazenar o índice da div com a classe "on"
+            todasAsPerguntas.forEach(function(div, indice) {
+                if (div.classList.contains('on')) {
+                    indiceDaDivOn = indice;
+                    return; // Interrompe a iteração assim que encontrar a div desejada
+                }
+            });
+            if (indiceDaDivOn !== -1) {
+                const atualPergunta = document.querySelectorAll('.content .formularios .perguntas')[indiceDaDivOn];
+                const proximaPergunta = document.querySelectorAll('.content .formularios .perguntas')[indiceDaDivOn + 1];
+                total = ((indiceDaDivOn + 1) / total)
+                total *= 100;
+                atualPergunta.classList.remove('on');
+                proximaPergunta.classList.add('on');
+                progresso.style.background = `linear-gradient(90deg, var(--azul) ${total}%, #ccc ${total}%)`;
+                btnVoltar.style.display = "block";
+            }
+        }
+
+        function voltar() {
+            var todasAsPerguntas = document.querySelectorAll('.content .formularios .perguntas');
+            const btnVoltar = document.querySelector('.content .formularios .btn-voltar');
+            const progresso = document.querySelector('.content .barra-de-progresso');
+            var total = todasAsPerguntas.length - 1;
+            
+            // Inicializa uma variável para armazenar o índice da div com a classe "on"
+            todasAsPerguntas.forEach(function(div, indice) {
+                if (div.classList.contains('on')) {
+                    indiceDaDivOn = indice;
+                    return; // Interrompe a iteração assim que encontrar a div desejada
+                }
+            });
+
+            if (indiceDaDivOn !== 0) {
+                const atualPergunta = document.querySelectorAll('.content .formularios .perguntas')[indiceDaDivOn];
+                const proximaPergunta = document.querySelectorAll('.content .formularios .perguntas')[indiceDaDivOn - 1];
+                total = ((indiceDaDivOn - 1) / total)
+                total *= 100;
+                progresso.style.background = `linear-gradient(90deg, var(--azul) ${total}%, #ccc ${total}%)`;
+                atualPergunta.classList.remove('on');
+                proximaPergunta.classList.add('on');
+            } 
+            if (indiceDaDivOn - 1 === 0) {
+                btnVoltar.style.display = "none";
+                progresso.style.background = 'linear-gradient(90deg, var(--azul) 2%,#ccc 2%)';
+            }
+        }
 
         function irPagina(pagina) {
             window.location.href = `../${pagina}`;
@@ -141,13 +216,24 @@
                         .orderBy('id', 'asc')
                         .onSnapshot((data) => {
                             data.docs.map((val) => {
+                                const id = val.data().id;
                                 const pergunta = val.data().pergunta;
-                                formularios.innerHTML += `
-                                    <div data-pergunta="${pergunta}" class="perguntas">
-                                        <h1>${pergunta}</h1>
-                                        <section></section>
-                                    </div>
-                                `;
+                                if (id === '1') {
+                                    formularios.innerHTML += `
+                                        <div data-pergunta="${pergunta}" class="perguntas on">
+                                            <h1>${pergunta}</h1>
+                                            <section></section>
+                                        </div>
+                                    `;  
+                                } else {
+                                    formularios.innerHTML += `
+                                        <div data-pergunta="${pergunta}" class="perguntas">
+                                            <h1>${pergunta}</h1>
+                                            <section></section>
+                                        </div>
+                                    `;
+                                }
+                                
                             });
                         });
 
@@ -161,7 +247,6 @@
                                 const pergunta = val.data().pergunta;
                                 const div = document.querySelector(`div[data-pergunta="${pergunta}"] section`);
                                 const form = val.data().form;
-                                alert(form)
                                 div.innerHTML = `
                                     ${form}
                                 `;
@@ -196,25 +281,6 @@
 
                             </div>
 
-                            <article class="content">
-
-                                <section class="formulario">
-
-                                    <div class="barra-de-progresso"></div>
-
-                                    <div class="flex">
-                                        <ion-icon class="estrela" name="star"></ion-icon>
-                                        <p>Confira as avaliações dos profissionais</p>
-                                    </div>
-
-                                    <h1 id="pergunta"></h1>
-                                    <ul id="resposta"></ul>
-
-                                    <button>Próximo</button>
-
-                                </section>
-
-                            </article>
                         `;
                     }
                 });
